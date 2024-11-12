@@ -5,10 +5,16 @@ class BankingSystemImpl(BankingSystem):
     def __init__(self):
         super(BankingSystem, self).__init__
         self.accounts = {}
+        self.total_spend = {}
 
         # self.accounts = {
         # 1: {time1: $0, time2: $100},
         #2: {time1: $0, time2: $100}
+        #}
+
+        # self.total_spend = {
+        # 1: $20,
+        #2: $120
         #}
 
     def create_account(self, timestamp: int, account_id: str) -> bool:
@@ -16,6 +22,7 @@ class BankingSystemImpl(BankingSystem):
             return False
         else:
             self.accounts[account_id] = {timestamp: 0}
+            self.total_spend[account_id] = 0
             return True
 
     def deposit(self, timestamp: int, account_id: str, amount: int) -> int | None:
@@ -54,5 +61,19 @@ class BankingSystemImpl(BankingSystem):
         target_balance = last_target_balance + amount
         self.accounts[target_account_id].update({timestamp: target_balance})
 
+        # update spending record of source account
+        self.total_spend[source_account_id] += amount
+
         return source_balance
     
+    def top_spenders(self, timestamp: int, n: int) -> list[str]:
+        # Sort in order of total transaction amount, or alphabetical of account_id for tie breaker
+        sorted_spending = sorted(
+            self.total_spend.items(),
+            key=lambda item: (-item[1], item[0])
+        )
+
+        if len(self.total_spend) < n:
+            return [f"{key}({val})" for key, val in sorted_spending]
+
+        return [f"{key}({val})" for key, val in sorted_spending[:n]]
