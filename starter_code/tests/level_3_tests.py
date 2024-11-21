@@ -1,5 +1,7 @@
 import unittest
-from banking_system_impl import BankingSystemImpl
+import sys
+sys.path.insert(0, '../')
+from banking_system_impl_lvl_3 import BankingSystemImpl
 
 
 class Level3Tests(unittest.TestCase):
@@ -34,7 +36,7 @@ class Level3Tests(unittest.TestCase):
         self.assertEqual(self.system.pay(5, 'account1', 100), 'payment1')
         self.assertEqual(self.system.pay(6, 'account2', 200), 'payment2')
         self.assertEqual(self.system.pay(7, 'account2', 300), 'payment3')
-        self.assertEqual(self.system.pay(8, 'account1', 400), 'payment4')
+        self.assertEqual(self.system.pay(8, 'account1', 400), 'payment4') 
         self.assertEqual(self.system.deposit(9, 'account1', 100), 1600)
         self.assertEqual(self.system.deposit(10, 'account2', 100), 600)
         self.assertEqual(self.system.deposit(86400010, 'account1', 100), 1710)
