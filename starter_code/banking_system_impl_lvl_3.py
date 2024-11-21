@@ -30,9 +30,13 @@ class BankingSystemImpl(BankingSystem):
     def deposit(self, timestamp: int, account_id: str, amount: int) -> int | None:
         if account_id not in self.accounts.keys(): #account already exists
             return None
-        else:
-            self.accounts[account_id].update({timestamp: amount})
-            return self._get_latest_balance(account_id, timestamp)
+        
+        #process pending cashback if this timestamp matches
+        if timestamp in self.accounts[account_id]:
+            amount += self.accounts[account_id][timestamp]
+
+        self.accounts[account_id].update({timestamp: amount})
+        return self._get_latest_balance(account_id, timestamp)
     
     def transfer(self, timestamp: int, source_account_id: str, target_account_id: str, amount: int) -> int | None:
         if source_account_id == target_account_id:
@@ -83,16 +87,18 @@ class BankingSystemImpl(BankingSystem):
         if account_balance < amount:
             return None
         
+        # withdraw amount from account
+        self.accounts[account_id][timestamp] = self.accounts[account_id].get(timestamp, 0) - amount
+
         # Update total spend for account
         self.total_spend[account_id] += amount
 
-        # withdraw amount from account
-        self.accounts[account_id].update({timestamp: -amount})
-        
         # Process cash back
         cashback = math.floor(0.02*amount)
-        self.deposit(timestamp + 86400000, account_id, cashback)
-
+        cashback_timestamp = timestamp + 86400000
+        if cashback > 0:
+            self.accounts[account_id].setdefault(cashback_timestamp, 0)
+            self.accounts[account_id][cashback_timestamp] += cashback
         # update payment history
         payment_id = f"payment{len(self.payment_history) + 1}"
         self.payment_history.update({payment_id : (timestamp, account_id)})
