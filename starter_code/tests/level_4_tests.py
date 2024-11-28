@@ -1,5 +1,7 @@
 import unittest
-from banking_system_impl import BankingSystemImpl
+import sys
+sys.path.insert(0, '../')
+from banking_system_impl_lvl_4 import BankingSystemImpl
 
 
 class Level4Tests(unittest.TestCase):
@@ -182,7 +184,7 @@ class Level4Tests(unittest.TestCase):
         self.assertTrue(self.system.merge_accounts(17, 'account3', 'account4'))
         self.assertTrue(self.system.merge_accounts(18, 'account2', 'account3'))
         self.assertTrue(self.system.merge_accounts(19, 'account1', 'account2'))
-        self.assertEqual(self.system.deposit(20, 'account1', 100), 3400)
+        self.assertEqual(self.system.deposit(20, 'account1', 100), 3400) # fail 
         self.assertIsNone(self.system.deposit(21, 'account2', 100))
         self.assertIsNone(self.system.deposit(22, 'account3', 100))
         self.assertIsNone(self.system.deposit(23, 'account4', 100))
@@ -236,9 +238,9 @@ class Level4Tests(unittest.TestCase):
         self.assertEqual(self.system.transfer(38, 'acc7', 'acc6', 160), 8632)
         self.assertEqual(self.system.transfer(39, 'acc9', 'acc3', 230), 5996)
         self.assertEqual(self.system.transfer(40, 'acc1', 'acc8', 122), 7539)
-        self.assertTrue(self.system.merge_accounts(42, 'acc1', 'acc2'))
+        self.assertTrue(self.system.merge_accounts(42, 'acc1', 'acc2')) # acc2 merged into acc1, acc2 removed
         self.assertTrue(self.system.merge_accounts(43, 'acc1', 'acc3'))
-        self.assertTrue(self.system.merge_accounts(44, 'acc1', 'acc4'))
+        self.assertTrue(self.system.merge_accounts(44, 'acc1', 'acc4')) # acc4 merged into acc1 
         self.assertTrue(self.system.merge_accounts(45, 'acc1', 'acc5'))
         self.assertTrue(self.system.merge_accounts(46, 'acc1', 'acc6'))
         self.assertTrue(self.system.merge_accounts(47, 'acc1', 'acc7'))
@@ -261,9 +263,9 @@ class Level4Tests(unittest.TestCase):
         self.assertIsNone(self.system.get_payment_status(86400040, 'acc1', 'payment10'))
         self.assertIsNone(self.system.get_balance(86400041, 'acc0', 33))
         self.assertEqual(self.system.get_balance(86400042, 'acc1', 2), 0)
-        self.assertEqual(self.system.get_balance(86400043, 'acc2', 19), 8094)
+        self.assertEqual(self.system.get_balance(86400043, 'acc2', 19), 8094) # fail none != 8094-> "acc2 should be removed from the system after merge"
         self.assertIsNone(self.system.get_balance(86400044, 'acc3', 2))
-        self.assertEqual(self.system.get_balance(86400045, 'acc4', 17), 7335)
+        self.assertEqual(self.system.get_balance(86400045, 'acc4', 17), 7335) # fail for same reason
         self.assertIsNone(self.system.get_balance(86400046, 'acc5', 50))
         self.assertEqual(self.system.get_balance(86400047, 'acc6', 23), 6054)
         self.assertEqual(self.system.get_balance(86400048, 'acc7', 17), 0)
