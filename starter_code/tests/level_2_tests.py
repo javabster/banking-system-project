@@ -1,5 +1,7 @@
 import unittest
-from banking_system_impl import BankingSystemImpl
+import sys
+sys.path.insert(0, '../')
+from banking_system_impl_lvl_2 import BankingSystemImpl
 
 
 class Level2Tests(unittest.TestCase):
