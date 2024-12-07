@@ -15,6 +15,19 @@ class BankingSystemImpl(BankingSystem):
         self.accounts = {} # account_id: {timestamp : balance}
 
     def create_account(self, timestamp: int, account_id: str) -> bool:
+        '''
+        create_account function creates a new account if the account id dooes not already exist
+
+        Parameters: 
+        ----------
+        timestamp (int): time creation is occurring
+        account_id (str): unique account identifier
+        
+        Returns:
+        --------
+        True (boolean): account is created
+        False(boolean): account is not created because it already exists
+        '''
         if account_id in self.accounts: # Account already exists
             return False
         else:
@@ -22,6 +35,20 @@ class BankingSystemImpl(BankingSystem):
             return True
 
     def deposit(self, timestamp: int, account_id: str, amount: int) -> int | None:
+        '''
+        deposit function adds given amount of money into specified account and returns the new balance
+
+        Parameters:
+        ----------
+        timestamp (int): time of transaction
+        account_id (str): unique account identifier
+        amount (int): amount of money to add to account
+
+        Returns:
+        -------
+        (int): updated balance after deposit
+        
+        '''
         if account_id not in self.accounts.keys(): # Account already exists
             return None
         else:
@@ -35,6 +62,20 @@ class BankingSystemImpl(BankingSystem):
             return new_balance
     
     def transfer(self, timestamp: int, source_account_id: str, target_account_id: str, amount: int) -> int | None:
+        '''
+        transfer function moves amount from source_account_id and deposits it into target_account_id
+
+        Parameters:
+        ----------
+        timestamp (int): time of transaction
+        source_account_id (): unique identifier for account that funds are removed from
+        target_account_id (): unique identifier for the account that receives funds
+        amount (int): amount of money to be transferred
+
+        Returns:
+        -------
+        (int) new balance of the source_account_id 
+        '''
         if source_account_id == target_account_id: # Account ids are the same
             return None
         
