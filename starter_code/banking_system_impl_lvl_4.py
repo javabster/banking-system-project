@@ -2,6 +2,18 @@ from banking_system import BankingSystem
 import math
 
 class BankingSystemImpl(BankingSystem):
+    """
+    Banking system implementation
+
+    Attributes
+    ----------
+    accounts : dict
+        Stores accounts and a record of their balance at given timestamps
+    total_spend: dict
+        Stores information about the total spend to date for each account
+    payment_history: dict
+        Stores a record of every payment for each account 
+    """
 
     def __init__(self):
         super(BankingSystem, self).__init__
@@ -74,6 +86,7 @@ class BankingSystemImpl(BankingSystem):
         timestamp (int): time of transaction
         source_account_id (): unique identifier for account that funds are removed from
         target_account_id (): unique identifier for the account that receives funds
+        amount (int): amount of money to be transferred
 
         Returns:
         -------
@@ -205,13 +218,13 @@ class BankingSystemImpl(BankingSystem):
         else:
             return "CASHBACK_RECEIVED"
 
-    def get_balance(self, timestamp: int, account_id: str, time_at: int):
+    def get_balance(self, timestamp: int, account_id: str, time_at: int) -> int:
         '''
-        returns the total amount of moeny in the account account_od at given timestamp time_at
+        returns the total amount of money in the account account_id at given timestamp time_at
 
         Parameters:
         ----------
-        timestamp (int): time pay is occuring
+        timestamp (int): time when balance retrieval is occuring
         account_id (str): unique account identifier
         time_at (int): the timestamp of where you want to check balance
 
